@@ -6,20 +6,47 @@ const Article = require('../models/Article');
 const normalize = (text) =>
   text.toLowerCase().replace(/[^a-zA-Z ]/g, '');
 
-const get = (req, res, next) => {
+const toList = (text) => normalize(text).split(' ');
 
+const get = async (req, res, next) => {
+  try {
+    const text = 'It is an example text number two';
+    const list = toList(text);
+    const hash = btc.hash(list);
+
+    const articles = await Article.find({
+      '$expr': {
+        '$function': {
+          body: (hash2) => {
+            return btc.compare(hash, hash2) >= 0.7
+          },
+          args: ['$hash'],
+          lang: 'js'
+        }
+      }
+    });
+
+    res.json(articles);
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const post = async (req, res, next) => {
-  const { content } = req.body;
-  const list = normalize(content).split(' ');
-  const hash = btc.hash(list);
+  try {
+    const { content } = req.body;
+    const list = toList(content);
+    const hash = btc.hash(list);
 
-  const article = new Article({ content, hash });
+    const article = new Article({ content, hash });
 
-  const result = await article.save();
+    const result = await article.save();
 
-  res.json(result);
+    res.json(result);
+  } catch (err) {
+    return next(err);
+  }
+
 };
 
 const getById = (req, res, next) => {

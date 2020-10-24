@@ -4,6 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
 const bodyParser = require('body-parser');
+const errorhandler = require('errorhandler');
 const api = require('./api.js');
 const app = express();
 
@@ -13,12 +14,14 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.use('/', api);
+app.use(errorhandler());
 
 const start = async () => {
   try {
     await mongoose.connect(config.get('MONGOURI'), {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useCreateIndex: true
     });
 
     const PORT = config.get('PORT') || 8000;

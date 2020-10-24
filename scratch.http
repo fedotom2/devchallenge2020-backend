@@ -1,8 +1,12 @@
+GET http://localhost:8000/articles
+Accept: application/json
+
+###
 POST http://localhost:8000/articles
 Content-Type: application/json
 
 {
-  "content": "Two example text"
+  "content": "Another text"
 }
 
 ###
