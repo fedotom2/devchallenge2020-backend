@@ -1,3 +1,25 @@
+POST http://localhost:8000/articles
+Content-Type: application/json
+
+{
+  "content": "Two example text"
+}
+
+<> 2020-10-25T121024.200.json
+
+###
+
+POST http://localhost:8000/articles
+Content-Type: application/json
+
+{
+  "content": "One example text"
+}
+
+<> 2020-10-25T120458.200.json
+
+###
+
 GET http://localhost:8000
 Accept: application/json
 

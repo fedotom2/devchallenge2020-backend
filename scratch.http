@@ -1,2 +1,10 @@
+POST http://localhost:8000/articles
+Content-Type: application/json
+
+{
+  "content": "Two example text"
+}
+
+###
 GET http://localhost:8000
 Accept: application/json
