@@ -2,6 +2,7 @@
 
 const btc = require('bloom-text-compare');
 const config = require('config');
+const { ObjectId } = require('mongoose').Types;
 const Article = require('../models/Article');
 
 const normalize = (text) =>
@@ -53,8 +54,26 @@ const post = async (req, res, next) => {
 
 };
 
-const getById = (req, res, next) => {
+const getById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
 
+    const article = await Article.findById(id);
+    const articles = await Article.find();
+    const filtered =
+      articles.filter((el) => {
+        return btc.compare(article.hash, el.hash) >= config.get('THRESHOLD')
+          && el._id.toString() !== article._id.toString()
+      }).map(el => el._id);
+
+    res.json({
+      id: article._id,
+      content: article.content,
+      duplicate_article_ids: filtered
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 module.exports.get = get;
