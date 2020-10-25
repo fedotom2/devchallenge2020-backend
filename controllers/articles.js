@@ -24,9 +24,8 @@ const get = async (req, res, next) => {
           break;
 
         const distance = btc.compare(article.hash, unique.hash);
-        if (distance < config.get('THRESHOLD') && article._id.toString()) {
+        if (distance < config.get('THRESHOLD'))
           counter++;
-        }
       }
 
       if (uniques.length === counter)
