@@ -2,7 +2,7 @@ GET http://localhost:8000/duplicate_groups
 Accept: application/json
 
 ###
-GET http://localhost:8000/articles/5f94bf88f4cc4d3c34a2b684
+GET http://localhost:8000/articles/5f95c11ed2f6692d5c6112c4
 Accept: application/json
 
 ###
