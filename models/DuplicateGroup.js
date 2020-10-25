@@ -1,10 +1,10 @@
 'use strict';
 
-const { Scheme, model, Types } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
 const ObjectId = Types.ObjectId;
 
-const scheme = new Scheme({
+const schema = new Schema({
   group: { type: [ObjectId] }
 });
 
-module.exports = model('DuplicateGroup', scheme);
+module.exports = model('DuplicateGroup', schema);

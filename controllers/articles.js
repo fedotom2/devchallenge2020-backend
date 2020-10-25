@@ -3,6 +3,7 @@
 const btc = require('bloom-text-compare');
 const config = require('config');
 const Article = require('../models/Article');
+const DuplicateGroup = require('../models/DuplicateGroup');
 
 const normalize = (text) =>
   text.toLowerCase().replace(/[^a-zA-Z ]/g, '');
@@ -69,6 +70,16 @@ const post = async (req, res, next) => {
         return btc.compare(hash, el.hash) >= config.get('THRESHOLD')
           && el._id.toString() !== resultArticle._id.toString()
       }).map(el => el._id);
+
+    if (filtered.length === 1) {
+      const group = [filtered[0]._id, article._id];
+      const duplicates = new DuplicateGroup({ group });
+      await duplicates.save();
+    } else if (filtered.length > 1) {
+      const group = filtered.map(el => el._id);
+      const group1 = group.concat(article._id);
+      const duplicates = await DuplicateGroup.findOneAndUpdate({ group }, { group: group1 });
+    }
 
     res.json({
       id: resultArticle._id,

@@ -21,7 +21,8 @@ const start = async () => {
     await mongoose.connect(config.get('MONGOURI'), {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      useCreateIndex: true
+      useCreateIndex: true,
+      useFindAndModify: true
     });
 
     const PORT = config.get('PORT') || 8000;
