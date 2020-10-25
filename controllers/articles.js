@@ -2,7 +2,6 @@
 
 const btc = require('bloom-text-compare');
 const config = require('config');
-const { ObjectId } = require('mongoose').Types;
 const Article = require('../models/Article');
 
 const normalize = (text) =>
@@ -10,24 +9,52 @@ const normalize = (text) =>
 
 const toList = (text) => normalize(text).split(' ');
 
+// GET /articles
 const get = async (req, res, next) => {
   try {
-    const text = 'It is an example text number two';
-    const list = toList(text);
-    const hash = btc.hash(list);
-
     const articles = await Article.find();
+    const uniques = [ articles[0] ];
+    const answer = [];
 
-    const filtered = articles.filter((article) => {
-      return btc.compare(hash, article.hash) >= config.get('THRESHOLD')
-    })
+    for (let article of articles) {
+      let counter = 0;
+      for (let unique of uniques) {
+        if (article._id.toString() === unique._id.toString())
+          break;
 
-    res.json(filtered);
+        const distance = btc.compare(article.hash, unique.hash);
+        if (distance < config.get('THRESHOLD') && article._id.toString()) {
+          counter++;
+        }
+      }
+
+      if (uniques.length === counter)
+        uniques.push(article);
+
+      counter = 0;
+    }
+
+    for (let unique of uniques) {
+      const filtered =
+        articles.filter((el) => {
+          return btc.compare(unique.hash, el.hash) >= config.get('THRESHOLD')
+            && el._id.toString() !== unique._id.toString()
+        }).map(el => el._id);
+
+      answer.push({
+        id: unique._id,
+        content: unique.content,
+        duplicate_article_ids: filtered
+      });
+    }
+
+    res.json({ articles: answer });
   } catch (err) {
     return next(err);
   }
 };
 
+// POST /articles
 const post = async (req, res, next) => {
   try {
     const { content } = req.body;
@@ -54,6 +81,7 @@ const post = async (req, res, next) => {
 
 };
 
+// GET /articles/:id
 const getById = async (req, res, next) => {
   try {
     const { id } = req.params;
