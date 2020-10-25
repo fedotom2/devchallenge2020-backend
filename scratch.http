@@ -10,9 +10,5 @@ POST http://localhost:8000/articles
 Content-Type: application/json
 
 {
-  "content": "The legal system is made up of criminal and civil courts and specialty courts like bankruptcy and family law courts. Each court is vested with its own jurisdiction. Jurisdiction refers to the types of cases the court is permitted to rule on. Sometimes, only one type of court can hear a particular case. For instance, bankruptcy cases can be ruled on only in bankruptcy court. In other situations, it is possible for more than one court to have jurisdiction. For instance, both a state and federal criminal court could have authority over a criminal case that is also considered an offense under federal and state drug laws."
+  "content": "When your focus is to improve employee performance, ongoing dialogue between managers and their direct reports is essential. While performance management often involves conducting annual performance evaluations, it does involve more than just that. Many companies don’t do formal performance appraisals anymore. Instead, they encourage one-on-one dialogues in which supervisors hold meetings with employees as a way to facilitate two-way communication and one-on one dialogue. These are done on a quarterly or monthly basis. "
 }
-
-###
-GET http://localhost:8000
-Accept: application/json
