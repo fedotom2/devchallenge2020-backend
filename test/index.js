@@ -92,6 +92,24 @@ describe('Express application', () => {
   });
 
   describe('Duplicate Groups controller', () => {
+    // GET /duplicate_groups
+    it('should send back all duplicates groups', (done) => {
+      request(app)
+        .get('/duplicate_groups')
+        .set('Content-Type', 'application/json')
+        .expect('Content-Type', /json/)
+        .expect(200, (err, res) => {
+          if (err)
+            return done(err);
 
+          if (res.body.duplicate_groups) {
+            const { duplicate_groups } = res.body;
+            const group = duplicate_groups[duplicate_groups.length - 1];
+            expect(group[0].toString()).to.equal(firstId);
+            expect(group[1].toString()).to.equal(secondId);
+            done();
+          }
+        });
+    })
   });
 });

@@ -25,8 +25,10 @@ const start = async () => {
       useFindAndModify: true
     });
 
-    const PORT = config.get('PORT') || 8000;
-    app.listen(PORT, () => console.log(`Listening on port ${ PORT }`));
+    if (!module.parent) {
+      const PORT = config.get('PORT') || 8000;
+      app.listen(PORT, () => console.log(`Listening on port ${ PORT }`));
+    }
   } catch (err) {
     console.error(err.message);
     process.exit(1);

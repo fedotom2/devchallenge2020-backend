@@ -1,5 +1,5 @@
 {
   "PORT": 8000,
-  "MONGOURI": "mongodb://localhost:27017/devchallenge2020",
+  "MONGOURI": "mongodb://devchallenge-db:27017/devchallenge2020",
   "THRESHOLD": 0.7
 }
