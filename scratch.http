@@ -14,5 +14,5 @@ POST http://localhost:8000/articles
 Content-Type: application/json
 
 {
-  "content": "Lorem ipsum dolor sit amet"
+  "content": "It is an example text number four"
 }
